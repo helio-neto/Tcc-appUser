@@ -1,0 +1,72 @@
+<ion-header>
+
+    <ion-navbar>
+          <button ion-button menuToggle>
+                  <ion-icon name="menu"></ion-icon>
+                </button>
+      <ion-title>Cadastro de usuário</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding> 
+      <ion-row>
+          <ion-col>
+            <img src="../../assets/imgs/beerslide3.jpg" />
+          </ion-col>
+        </ion-row>
+        <p *ngIf="submitAttempt" style="color: #ea6153;">Por favor preencha os campos corretamente.</p>
+   
+  <ion-list no-lines>
+   
+      <form [formGroup]="userForm">
+   
+          <ion-item>
+              <ion-label floating>Nome Completo</ion-label>
+              <ion-input formControlName="username" type="text" [class.invalid]="!userForm.controls['username'].valid && (userForm.controls['username'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!userForm.controls['username'].valid  && (userForm.controls['username'].dirty || submitAttempt)">
+              <p>* Por favor entre um nome válido.</p>
+          </ion-item>
+          <ion-item>
+              <ion-label floating>Telefone</ion-label>
+              <ion-input formControlName="phone" type="text" [class.invalid]="!userForm.controls['phone'].valid && (userForm.controls['phone'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!userForm.controls['phone'].valid  && (userForm.controls['phone'].dirty || submitAttempt)">
+              <p>* Por favor entre um telefone válido.</p>
+          </ion-item>
+          <ion-item>
+              <ion-label floating>Celular</ion-label>
+              <ion-input formControlName="celphone" type="text" [class.invalid]="!userForm.controls['celphone'].valid && (userForm.controls['celphone'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!userForm.controls['celphone'].valid  && (userForm.controls['celphone'].dirty || submitAttempt)">
+              <p>* Por favor entre um celular válido.</p>
+          </ion-item>
+          <ion-item>
+              <ion-label floating>Foto</ion-label>
+              <ion-input formControlName="photo" type="text" [class.invalid]="!userForm.controls['photo'].valid && (userForm.controls['photo'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label floating>E-mail (Login)</ion-label>
+              <ion-input formControlName="email" type="email" [class.invalid]="!userForm.controls['email'].valid && (userForm.controls['email'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!userForm.controls['email'].valid  && (userForm.controls['email'].dirty || submitAttempt)">
+              <p>* Por favor entre um email válido.</p>
+          </ion-item>
+          <ion-item>
+              <ion-label floating>Senha</ion-label>
+              <ion-input formControlName="password" type="password" [class.invalid]="!userForm.controls['password'].valid && (userForm.controls['password'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!userForm.controls['password'].valid  && (userForm.controls['password'].dirty || submitAttempt)">
+              <p>* Por favor informe uma senha.</p>
+          </ion-item>
+          
+      </form>
+   
+  </ion-list>
+  <button ion-button full [disabled]="!userForm.valid"
+          color="primary" (click)="save()">Entrar no HasBeer!
+  </button>
+  </ion-content>
+  

@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title></ion-title>
+    <ion-searchbar *ngIf="searchON"
+          [(ngModel)]="query"
+          [showCancelButton]="true"
+          (ionInput)="onInput($event)"
+          (ionCancel)="onCancel($event)"
+          [cancelButtonText]="cancelText"
+          [animated]="true"
+          [debounce]=750>
+          </ion-searchbar>
+          <ion-buttons end>
+            <button ion-button icon-only (click)="searchBarMap()">
+              <ion-icon name="search"></ion-icon>
+            </button>
+          </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>    
+  <div #pleaseConnect id="please-connect">
+    <p>Por favor se conecte a internet...</p>
+  </div>
+  <div #map id="map"></div>
+</ion-content> 

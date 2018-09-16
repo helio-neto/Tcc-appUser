@@ -4,31 +4,48 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { IonicStorageModule } from '@ionic/storage';
+import { Geolocation } from '@ionic-native/geolocation';
+import { Network } from '@ionic-native/network';
+import { HttpClientModule } from '@angular/common/http';
+
+import { PubProvider } from '../providers/pub/pub';
+import { UserProvider } from '../providers/user/user';
+import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
+import { ConnectivityProvider } from '../providers/connectivity/connectivity';
+import { LocationProvider } from '../providers/location/location';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    ListPage
+    HomePage
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    ListPage
+    HomePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    Geolocation,
+    Network,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    PubProvider,
+    UserProvider,
+    GoogleMapsProvider,
+    ConnectivityProvider,
+    LocationProvider
   ]
 })
 export class AppModule {}

@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar>
+      <ion-title>{{pub.pubname}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="background_menu">
+  <ion-card *ngIf="pub.pubname">
+      <img class="pubimage" [src]="pub.photo" />
+      <ion-card-content>
+          <h2 class="card-title">{{pub.pubname}}</h2>
+          <p>{{pub.location.street}}, {{pub.location.city}} {{pub.location.uf}}</p>
+      </ion-card-content>
+      <ion-list>
+
+          <ion-item (click)="openMenu();">
+              <ion-icon item-left name="beer"></ion-icon>
+              <h3>Cervejas</h3>
+              <ion-note item-right iont-text color="dark">{{pub.beers.length}}</ion-note>
+          </ion-item>
+          <ion-item>
+              <ion-icon item-left name="compass"></ion-icon>
+              <h3>Distância</h3>
+              <ion-note item-right iont-text color="dark">{{pub.distance}} Km</ion-note>
+          </ion-item>
+          <ion-item>
+              <ion-icon item-left name="mail"></ion-icon>
+              <h3>E-mail</h3>
+              <ion-note item-right iont-text color="dark">{{pub.email}}</ion-note>
+          </ion-item>
+          <button ion-item>
+              <ion-icon item-left name="call"></ion-icon>
+              <h3>Fone</h3>
+              <ion-note item-right iont-text color="dark">{{pub.phone}}</ion-note>
+          </button>
+      </ion-list>
+
+      <!-- <ion-item>
+          <button ion-button icon-left clear item-left>
+              <ion-icon name="star"></ion-icon>
+              Favorito
+          </button>
+      </ion-item> -->
+
+  </ion-card>
+</ion-content>
