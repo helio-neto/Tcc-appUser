@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="hasbeer.com.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Tcc-app</name>
-    <description>An awesome Ionic/Cordova app.</description>
+    <description>An awesome way to find your beers and pubs!</description>
     <author email="helio.hetfield@gmail.com" href="http://ionicframework.com/">HasBeer Team</author>
     <content src="index.html" />
     <access origin="*" />
