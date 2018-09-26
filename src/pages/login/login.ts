@@ -5,8 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import { UserProvider } from './../../providers/user/user';
 
-import { WelcomePage } from './../welcome/welcome';
-
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -60,7 +58,7 @@ export class LoginPage {
         }else{
           this.presentToast(res.message,"success");
           this.storage.set('userdata',{
-              pub: res.pub,
+              user: res.user,
               isLoggedIn: true
           });
           setTimeout(() => {

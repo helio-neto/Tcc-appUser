@@ -83,7 +83,7 @@ export class MyApp {
   // 
   logout(){
       this.storage.set('userdata',{
-        pub: null,
+        user: null,
         isLoggedIn: false
       });
       this.isLoggedIn = false;
