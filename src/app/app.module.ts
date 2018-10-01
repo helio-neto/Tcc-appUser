@@ -10,6 +10,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Diagnostic } from '@ionic-native/diagnostic';
 import { Network } from '@ionic-native/network';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -39,6 +40,7 @@ import { LocationProvider } from '../providers/location/location';
     StatusBar,
     SplashScreen,
     Geolocation,
+    Diagnostic,
     Network,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     PubProvider,

@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { PubProvider } from '../../providers/pub/pub';
 import { LocationProvider } from '../../providers/location/location';
 import { GoogleMapsProvider } from './../../providers/google-maps/google-maps';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 @IonicPage()
 @Component({
@@ -26,22 +27,26 @@ export class MapPage {
   saveDisabled: boolean;
   location: any; 
   cancelText: string = "Cancelar";
-
+  gpsType: any;
   constructor(public platform: Platform, public navCtrl: NavController, public splashScreen: SplashScreen, 
-              public pubProvider: PubProvider, public googleMaps: GoogleMapsProvider, public events: Events, 
-              public navParams: NavParams, public locationProv: LocationProvider) {
-                
-  }
-  
-  // On View Load
-  // Check Platform, Load GoogleMaps, Load Pubs, Pin User, Pin Pubs
-  ionViewDidLoad() {
+    public pubProvider: PubProvider, public googleMaps: GoogleMapsProvider, public events: Events, 
+    public navParams: NavParams, public locationProv: LocationProvider,private diagnostic: Diagnostic) {
+      this.events.subscribe("search",(search)=>{
+        this.searchON = search;
+      });
+      this.gpsType = navParams.data;
+      console.log("MAP PARAMS",this.gpsType);
+      
+    }
+    
+    // On View Load
+    // Check Platform, Load GoogleMaps, Load Pubs, Pin User, Pin Pubs
+    ionViewDidLoad() {
       console.log('ionViewDidLoad MapPage');
       this.platform.ready().then(() => { 
-        this.events.subscribe("search",(search)=>{
-          this.searchON = search;
-        });
-        let mapLoaded = this.googleMaps.init(this.mapElement, this.pleaseConnect).then((data) => {
+        
+        let mapLoaded = this.googleMaps.init(this.mapElement, this.pleaseConnect, this.gpsType).then((data) => {
+          console.log("MapLoaded Return",data);
           this.splashScreen.hide();
           let locationsLoaded = this.locationProv.loadPubs().then((data)=>{
             console.log("Locations ->",data);
@@ -52,16 +57,16 @@ export class MapPage {
           });
         });
       });
-  }
-  // 
-  getUserPosition(){
-    this.locationProv.getUserLocation().then(result=>{
-      console.log("Result ->",result);
-      alert("User ->"+JSON.stringify(result));
-    });
-  }
-  // SearchBar Input Event     
-  onInput(event){
+    }
+    // 
+    // getUserPosition(){
+    //   this.locationProv.getUserLocation().then(result=>{
+    //     console.log("Result ->",result);
+    //     alert("User ->"+JSON.stringify(result));
+    //   });
+    // }
+    // SearchBar Input Event     
+    onInput(event){
       this.googleMaps.removeMarker();
       setTimeout(() => {
         this.locationProv.searchMap(this.query).then((data)=>{
@@ -69,20 +74,21 @@ export class MapPage {
           this.googleMaps.pinPubs(data);
         });
       }, 1000);    
-    //console.log(event);
-  }
-  // SearchBar Cancel Event
-  onCancel(event){
-      console.log(event);
-  }
-  searchBarMap(){
-    if(this.searchON){
-      this.searchON = false;
-    }else{
-      this.searchON = true;
+      //console.log(event);
     }
-    this.events.publish("searchHome",this.searchON);
- }
-  
-}
+    // SearchBar Cancel Event
+    onCancel(event){
+      console.log(event);
+    }
+    searchBarMap(){
+      if(this.searchON){
+        this.searchON = false;
+      }else{
+        this.searchON = true;
+      }
+      this.events.publish("searchHome",this.searchON);
+    }
+    
+    
+  }
   

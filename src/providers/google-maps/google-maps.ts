@@ -18,6 +18,7 @@ export class GoogleMapsProvider {
   mapInitialised: boolean = false;
   mapLoaded: any;
   erro: any;
+  gpsType: any;
   
   userMarker: any = [];
   userPos: any = null;
@@ -34,10 +35,10 @@ export class GoogleMapsProvider {
   }
     // INITIALIZE GOOGLE MAPS SERVICES
     // Receives screen elements and initialize procedures to load google maps on screen
-    init(mapElement: any, pleaseConnect: any): Promise<any> {   
+    init(mapElement: any, pleaseConnect: any, gpsType: any): Promise<any> {   
       this.mapElement = mapElement;
       this.pleaseConnect = pleaseConnect;
-      
+      this.gpsType = gpsType;
       return this.loadGoogleMaps();
     }
     // PROMISSE to LOAD GOOGLE MAPS
@@ -67,37 +68,40 @@ export class GoogleMapsProvider {
     initMap(): Promise<any> {    
       this.mapInitialised = true;
       return new Promise((resolve) => {
-
-          this.locationProvider.getUserLocation().then((data)=>{
-            console.log("USER",data['lat'], data['lng']);
-            this.userPos = new google.maps.LatLng(data['lat'], data['lng']);
-            let mapOptions = {
-              center: this.userPos,
-              zoom: 15,
-              mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-            this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-  
-            let image = {
-              url: 'assets/icon/mapicons/user.png',
-              scaledSize: new google.maps.Size(40, 40)
-            };
-            let meMarker = new google.maps.Marker({
-              position: this.userPos,
-              title: "Eu",
-              map: this.map,
-              icon: image
-            });
-            this.userMarker.push(meMarker);
-            let infoMe = new google.maps.InfoWindow({
-              content: "Estou aqui!"
-            });
-            google.maps.event.addListener(meMarker, 'click', () => {
-              infoMe.open(this.map, meMarker);
-            });
+          
             
-            resolve(true);
-          });
+            this.locationProvider.getUserLocation(this.gpsType).then((data)=>{
+              console.log("USER",data['type'],data['lat'], data['lng']);
+              this.userPos = new google.maps.LatLng(data['lat'], data['lng']);
+              let mapOptions = {
+                center: this.userPos,
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              }
+              this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    
+              let image = {
+                url: 'assets/icon/mapicons/user.png',
+                scaledSize: new google.maps.Size(40, 40)
+              };
+              let meMarker = new google.maps.Marker({
+                position: this.userPos,
+                title: "Eu",
+                map: this.map,
+                icon: image
+              });
+              this.userMarker.push(meMarker);
+              let infoMe = new google.maps.InfoWindow({
+                content: "Estou aqui!"
+              });
+              google.maps.event.addListener(meMarker, 'click', () => {
+                infoMe.open(this.map, meMarker);
+              });
+              
+              resolve(true);
+            });
+        
+          
       
         }).catch((error) => {
           

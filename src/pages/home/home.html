@@ -13,6 +13,6 @@
 </ion-header>
 
 <ion-tabs #myTabs color="light">
-  <ion-tab [root]="tab1Root" tabTitle="Mapa" tabIcon="navigate"></ion-tab>
+  <ion-tab [root]="tab1Root" [rootParams]="gpsType" tabTitle="Mapa" tabIcon="navigate"></ion-tab>
   <ion-tab [root]="tab2Root" tabTitle="Lista" tabIcon="list"></ion-tab>
 </ion-tabs>

@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Tabs, Events } from 'ionic-angular';
-import { NavController, Platform } from 'ionic-angular';
+import { NavController, NavParams ,Platform } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { PubProvider } from '../../providers/pub/pub';
@@ -20,14 +20,18 @@ export class HomePage {
 
   tab1Root: any = "MapPage";
   tab2Root: any = "ListPage";
-  
+  gpsType: any;
   searchON: boolean = false;
 
-  constructor(public platform: Platform, public navCtrl: NavController, public splashScreen: SplashScreen, 
-              public pubProvider: PubProvider, public googleMaps: GoogleMapsProvider, public event: Events) {
+  constructor(public platform: Platform, public navCtrl: NavController, public navParams: NavParams, 
+              public splashScreen: SplashScreen, public pubProvider: PubProvider, 
+              public googleMaps: GoogleMapsProvider, public event: Events) {
+
                 this.event.subscribe("searchHome",(search)=>{
                   this.searchON = search;
                 });
+                this.gpsType = navParams.data;
+                console.log("HomePArams",this.gpsType);
     }
     // 
     ionViewDidLoad(){
