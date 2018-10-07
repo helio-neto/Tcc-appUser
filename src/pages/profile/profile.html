@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Perfil</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background_menu" *ngIf="userReady" >
+  <ion-card *ngIf="userdata.user.consumername">
+      <img class="userimage" [src]="userdata.user.photo" />
+      <ion-card-content>
+          <h2 class="card-title">{{userdata.user.consumername}}</h2>
+          <p>{{userdata.user.location.street}}, {{userdata.user.location.city}} {{userdata.user.location.uf}}</p>
+      </ion-card-content>
+      <ion-list>
+          <ion-item>
+              <ion-icon item-left name="mail"></ion-icon>
+              <h3>E-mail</h3>
+              <ion-note item-right iont-text color="dark">{{userdata.user.email}}</ion-note>
+          </ion-item>
+          <button ion-item>
+              <ion-icon item-left name="call"></ion-icon>
+              <h3>Fone</h3>
+              <ion-note item-right iont-text color="dark">{{userdata.user.phone}}</ion-note>
+          </button>
+          <button ion-item>
+            <ion-icon item-left name="phone-portrait"></ion-icon>
+            <h3>Celular</h3>
+            <ion-note item-right iont-text color="dark">{{userdata.user.celphone}}</ion-note>
+        </button>
+      </ion-list>
+
+      <!-- <ion-item>
+          <button ion-button icon-left clear item-left>
+              <ion-icon name="construct"></ion-icon>
+              Editar
+          </button>
+      </ion-item> -->
+      
+  </ion-card>
+</ion-content>

@@ -24,9 +24,9 @@
    
           <ion-item>
               <ion-label floating>Nome Completo</ion-label>
-              <ion-input formControlName="username" type="text" [class.invalid]="!userForm.controls['username'].valid && (userForm.controls['username'].dirty || submitAttempt)"></ion-input>
+              <ion-input formControlName="consumername" type="text" [class.invalid]="!userForm.controls['consumername'].valid && (userForm.controls['consumername'].dirty || submitAttempt)"></ion-input>
           </ion-item>
-          <ion-item *ngIf="!userForm.controls['username'].valid  && (userForm.controls['username'].dirty || submitAttempt)">
+          <ion-item *ngIf="!userForm.controls['consumername'].valid  && (userForm.controls['consumername'].dirty || submitAttempt)">
               <p>* Por favor entre um nome válido.</p>
           </ion-item>
           <ion-item>

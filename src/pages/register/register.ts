@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController, Events } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { GoogleMapsProvider } from './../../providers/google-maps/google-maps';
 import { UserProvider } from './../../providers/user/user';
@@ -18,13 +18,15 @@ export class RegisterPage {
   addressConfirm: boolean = false;
   user: any;
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public toastCtrl: ToastController,
-              public navParams: NavParams, private formBuilder: FormBuilder,public googleMapsProvider: GoogleMapsProvider, 
-              public userProvider:UserProvider, private storage: Storage, public splashScreen: SplashScreen ) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, 
+              public toastCtrl: ToastController, public navParams: NavParams, 
+              private formBuilder: FormBuilder,public googleMapsProvider: GoogleMapsProvider, 
+              public userProvider:UserProvider, private storage: Storage, 
+              public splashScreen: SplashScreen, public events: Events ) {
     this.userForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      consumername: ['', Validators.required],
       location: formBuilder.group({
-        street: ['', Validators.required],
+        street: [''],
         hood: [''],
         lat: [''],
         lng: [''],
@@ -123,16 +125,23 @@ export class RegisterPage {
               let message = `${res.message}`;
               this.presentToast(message,"success");
               this.storage.set('userdata',{
-                pubid: res.pubid,
-                isLoggedIn: true
+                user: res.consumer,
+                isLoggedIn: true,
+                token: res.token
               })
               setTimeout(() => {
-                  this.navCtrl.setRoot("WelcomePage");
+                this.events.publish("login");
+                  this.navCtrl.setRoot("ProfilePage");
               }, 4000);
             }else{
               let message = `${res.message}`;
               this.presentToast(message,"error");
             }
+          },
+          (error)=>{
+            console.log("Error",error);
+              let message = JSON.stringify(error);
+              this.presentToast(message,"error");
           }
         );
     }

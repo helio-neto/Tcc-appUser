@@ -19,6 +19,7 @@ export class WelcomePage {
     this.splashScreen.hide()
     console.log('ionViewDidLoad WelcomePage');
   }
+  // 
   gpsAvailable(){
     this.diagnostic.isLocationAvailable().then((isAvailable)=>{
       console.log("Is Available? ",isAvailable);

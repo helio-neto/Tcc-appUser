@@ -21,9 +21,10 @@ export class MyApp {
   helpMenuItems: Array<{title: string, component: any, icon: string}>;
   
   constructor(public platform: Platform, public statusBar: StatusBar, 
-    public splashScreen: SplashScreen, public storage: Storage, 
-    public events: Events, public alertCtrl: AlertController,
-    public connectProv: ConnectivityProvider) {
+              public splashScreen: SplashScreen, public storage: Storage, 
+              public events: Events, public alertCtrl: AlertController,
+              public connectProv: ConnectivityProvider) {
+
       this.initializeApp();
       
       this.pages = [
@@ -37,7 +38,7 @@ export class MyApp {
       ];
       
       this.helpMenuItems = [
-        {title: 'Welcome', component: "WelcomePage", icon: 'bookmark'},
+        {title: 'Info', component: "WelcomePage", icon: 'bookmark'},
         {title: 'About', component: "WelcomePage", icon: 'information-circle'},
       ];
       
@@ -47,10 +48,15 @@ export class MyApp {
       
       this.events.subscribe("login", ()=>{
         this.isLoggedIn = true;
+        this.pages = [
+          { title: 'Perfil', component: "ProfilePage", icon: 'images' },
+          { title: 'Cervejas / Pubs', component: HomePage, icon: 'map' }
+        ];
       });
       
     }
-    
+    // Initializing the App 
+    // Checking the storage for login status and user data
     initializeApp() {
       this.platform.ready().then(() => {
         // Okay, so the platform is ready and our plugins are available.
@@ -61,7 +67,11 @@ export class MyApp {
             console.log("Storage ->",val);
             if(val.isLoggedIn){
               this.isLoggedIn = true;
-              this.rootPage = HomePage;
+              this.rootPage = "ProfilePage";
+              this.pages = [
+                { title: 'Perfil', component: "ProfilePage", icon: 'images' },
+                { title: 'Cervejas / Pubs', component: HomePage, icon: 'map' }
+              ];
               this.splashScreen.hide();
             }else{
               this.rootPage = "WelcomePage";
@@ -76,7 +86,8 @@ export class MyApp {
       });
     }
     
-    // 
+    // Open Page Handler 
+    // Check for Gps status if entering Home/Map Page
     openPage(page) {
       // Reset the content nav to have just this page
       // we wouldn't want the back button to show in this scenario
@@ -126,13 +137,17 @@ export class MyApp {
         this.nav.setRoot(page.component);
       }
     }
-    // 
+    // Logout Event Handler
     logout(){
       this.storage.set('userdata',{
         user: null,
         isLoggedIn: false
       });
       this.isLoggedIn = false;
+      this.pages = [
+        { title: 'Bem-Vindo', component: "WelcomePage", icon: 'images' },
+        { title: 'Cervejas / Pubs', component: HomePage, icon: 'map' }
+      ];
       this.nav.setRoot("WelcomePage");
     }
   }

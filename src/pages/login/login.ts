@@ -59,11 +59,12 @@ export class LoginPage {
           this.presentToast(res.message,"success");
           this.storage.set('userdata',{
               user: res.user,
-              isLoggedIn: true
+              isLoggedIn: true,
+              token: res.token
           });
           setTimeout(() => {
             this.events.publish("login");
-            this.navCtrl.setRoot("WelcomePage");
+            this.navCtrl.setRoot("ProfilePage");
           }, 4000);
         }
         console.log("Login response ->",res);
