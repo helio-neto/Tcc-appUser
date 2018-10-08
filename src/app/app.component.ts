@@ -92,6 +92,11 @@ export class MyApp {
       // Reset the content nav to have just this page
       // we wouldn't want the back button to show in this scenario
       if(page.component == HomePage){
+        if(!this.platform.is('cordova')){
+          let gpsType = "gps";
+            this.nav.setRoot(page.component,gpsType);
+            this.splashScreen.show();
+        }
         this.connectProv.gpsStatus().then((status)=>{
           console.log("Status",status);
           if(status){
