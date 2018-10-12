@@ -68,6 +68,9 @@ export class LoginPage {
           }, 4000);
         }
         console.log("Login response ->",res);
+      },
+      (error)=>{
+        this.presentToast(JSON.stringify(error),"error");
       });
     }
   }

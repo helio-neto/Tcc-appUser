@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-navbar>
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Cadastro de usuário</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding *ngIf="formReady"> 
+  <ion-row>
+      <ion-col>
+          <img src="../../assets/imgs/beer_logo.jpg" />
+      </ion-col>
+  </ion-row>
+  <p *ngIf="submitAttempt" style="color: #ea6153;">Por favor preencha os campos corretamente.</p>
+  
+  <ion-list no-lines  >
+      <form [formGroup]="userForm">
+          <ion-item>
+              <ion-label floating>Nome Completo</ion-label>
+              <ion-input formControlName="consumername" type="text" [class.invalid]="!userForm.controls['consumername'].valid && (userForm.controls['consumername'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!userForm.controls['consumername'].valid  && (userForm.controls['consumername'].dirty || submitAttempt)">
+              <p>* Por favor entre um nome válido.</p>
+          </ion-item>
+          <ion-item>
+              <ion-label floating>Telefone</ion-label>
+              <ion-input formControlName="phone" type="text" [class.invalid]="!userForm.controls['phone'].valid && (userForm.controls['phone'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!userForm.controls['phone'].valid  && (userForm.controls['phone'].dirty || submitAttempt)">
+              <p>* Por favor entre um telefone válido.</p>
+          </ion-item>
+          <ion-item>
+              <ion-label floating>Celular</ion-label>
+              <ion-input formControlName="celphone" type="text" [class.invalid]="!userForm.controls['celphone'].valid && (userForm.controls['celphone'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!userForm.controls['celphone'].valid  && (userForm.controls['celphone'].dirty || submitAttempt)">
+              <p>* Por favor entre um celular válido.</p>
+          </ion-item>
+          <ion-item>
+            <ion-label floating>Informações</ion-label>
+            <ion-textarea formControlName="info" type="text" [class.invalid]="!userForm.controls['info'].valid && (userForm.controls['info'].dirty || submitAttempt)"></ion-textarea>
+        </ion-item>
+          <ion-item>
+              <ion-label floating>Foto</ion-label>
+              <ion-input formControlName="photo" type="text" [class.invalid]="!userForm.controls['photo'].valid && (userForm.controls['photo'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label floating>E-mail (Login)</ion-label>
+              <ion-input formControlName="email" type="email" [class.invalid]="!userForm.controls['email'].valid && (userForm.controls['email'].dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="!userForm.controls['email'].valid  && (userForm.controls['email'].dirty || submitAttempt)">
+              <p>* Por favor entre um email válido.</p>
+          </ion-item>
+          <span formGroupName="location" no-lines>
+            <ion-list>
+                <ion-item>
+                    <ion-label floating>Endereço</ion-label>
+                    <ion-input type="text" formControlName="street"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="!userForm.controls['location'].controls['street'].valid  && (userForm.controls['location'].controls['street'].dirty || submitAttempt)">
+                    <p>* Por favor entre um endereço válido.</p>
+                </ion-item>
+                <ion-item>
+                    <button ion-button item-end icon-end color="secondary" (click)="getUserAddress()" >
+                          Validar Endereço
+                          <ion-icon name='search'></ion-icon>
+                    </button>
+                </ion-item>
+            </ion-list>    
+        </span>
+      </form>
+      
+  </ion-list>
+  <button ion-button full [disabled]="!userForm.valid"
+          color="primary" (click)="presentConfirmEdit()">Editar!
+  </button>
+</ion-content>

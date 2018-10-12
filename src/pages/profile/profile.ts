@@ -29,6 +29,9 @@ export class ProfilePage {
         console.log("User Data ->",this.userdata);
       });
     }
+    goEdit(){
+      this.navCtrl.setRoot("EditPage");
+    }
     
   }
   
