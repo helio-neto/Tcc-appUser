@@ -10,6 +10,7 @@
 
 <ion-content>
   <ion-list *ngFor="let beer of beers">
+    <div *ngIf="beer != null" >
     <ion-item (click)="itemTapped($event, beer)">
       <ion-avatar item-start>
         <img src="assets/icon/mapicons/beer.png">
@@ -17,6 +18,7 @@
       <h2>{{beer.name}}</h2>
       <p>{{beer.style}}</p>
     </ion-item>
+  </div>
   </ion-list>
   <!-- <button ion-item *ngFor="let beer of beers" (click)="itemTapped($event, beer)">
     <ion-icon name="beer" item-start></ion-icon>

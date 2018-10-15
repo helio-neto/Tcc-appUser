@@ -26,11 +26,16 @@ export class ProfilePage {
       this.storage.get("userdata").then((val)=>{
         this.userdata = val;
         this.userReady = true;
-        console.log("User Data ->",this.userdata);
+        // console.log("Profile User Data ->",this.userdata);
       });
     }
+    // 
     goEdit(){
-      this.navCtrl.setRoot("EditPage");
+      this.navCtrl.push("EditPage");
+    }
+    // 
+    openFav(){
+      this.navCtrl.push("FavoritesPage");
     }
     
   }

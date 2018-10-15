@@ -1,0 +1,54 @@
+<ion-header>
+    <ion-navbar no-border-bottom>
+      <ion-title>
+        Favoritos
+      </ion-title>
+    </ion-navbar>
+  
+    <ion-toolbar no-border-top color="light">
+      <ion-segment [(ngModel)]="favorites">
+        <ion-segment-button value="pubs">
+          Pubs
+        </ion-segment-button>
+        <ion-segment-button value="beers">
+          Cervejas
+        </ion-segment-button>
+       
+      </ion-segment>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <div [ngSwitch]="favorites">
+      <ion-list *ngSwitchCase="'pubs'">
+        <div *ngFor="let pub of pubs" >
+        <ion-item (click)="goToPub(pub._id)">
+          <ion-thumbnail item-start>
+            <img [src]="pub.photo">
+          </ion-thumbnail>
+          <h2>{{ pub.name }}</h2>
+        </ion-item>
+        </div>
+      </ion-list>
+  
+      <ion-list *ngSwitchCase="'beers'">
+          <div *ngFor="let beer of beers" >
+              <ion-item (click)="openModal(beer)">
+                  <ion-avatar item-start>
+                      <img src="assets/icon/mapicons/beer.png">
+                    </ion-avatar>
+                    <h2>{{beer.name}}</h2>
+                    <p>{{beer.style}}</p>
+              </ion-item>
+              </div>
+      </ion-list>
+     
+    </div>
+    <div *ngIf="selectedBeer" padding>
+        <h1>Informações</h1>
+        <p><b>IBU : </b>{{selectedBeer.ibu}}</p>
+        <p><b>ABV : </b>{{selectedBeer.abv}}</p>
+        <p><b>Estilo : </b>{{selectedBeer.style}}</p>
+        <p><b>Info : </b>{{selectedBeer.obs}}</p>
+      </div>
+  </ion-content>

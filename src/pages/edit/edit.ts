@@ -158,8 +158,10 @@ edit(){
     console.log("success!")
     console.log("Form ->",this.userForm.value);
     this.userProvider.edit(this.userForm.value).then((resp)=>{
-      console.log("Response ->",resp);
+      console.log("Response Edit ->",resp);
       if(resp['status']=="success"){
+        delete resp["consumer"]['hash'];
+        delete resp["consumer"]['salt'];
         this.presentToast(resp["message"], "success");
         setTimeout(() => {
           this.storage.get("userdata").then((val)=>{

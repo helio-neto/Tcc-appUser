@@ -55,6 +55,51 @@ export class UserProvider {
           console.log("ERRO na requisiçao",error);
           reject(error);
         });
-    })
+    });
+  }
+  // 
+  async addFavorite(data){
+    let headers = new HttpHeaders();
+    headers.append("Content-type","application/json");
+    console.log("Adicionando favorito",data);
+    let userStorage = await this.getStorageData();
+    data.token = userStorage.token;
+    data.consumer_id = userStorage.user._id;
+    return new Promise((resolve, reject)=>{
+      this.http.put(`${this.urlAPI}/favorites/${data.type}/${data.consumer_id}`, data,{headers:headers})
+        .subscribe(result =>{
+          resolve(result);
+        },
+        error=>{
+          console.log("ERRO na requisiçao",error);
+          reject(error);
+        });
+        
+    });
+  }
+  async removeFavorite(data){
+    let headers = new HttpHeaders();
+    headers.append("Content-type","application/json");
+    console.log("REMOVENDO favorito",data);
+    let userStorage = await this.getStorageData();
+    data.token = userStorage.token;
+    data.consumer_id = userStorage.user._id;
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      body: data,
+    };
+    return new Promise((resolve, reject)=>{
+      this.http.delete(`${this.urlAPI}/favorites/${data.type}/${data.consumer_id}`, options)
+        .subscribe(result =>{
+          resolve(result);
+        },
+        error=>{
+          console.log("ERRO na requisiçao",error);
+          reject(error);
+        });
+    });
+    
   }
 }
