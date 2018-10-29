@@ -1,41 +1,66 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title *ngIf="!selectedItem">Carta de Cervejas</ion-title>
-    <ion-title *ngIf="selectedItem">{{selectedItem.name}}</ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content>
-  <ion-list *ngFor="let beer of beers">
-    <div *ngIf="beer != null" >
-    <ion-item (click)="itemTapped($event, beer)">
-      <ion-avatar item-start>
-        <img src="assets/icon/mapicons/beer.png">
-      </ion-avatar>
-      <h2>{{beer.name}}</h2>
-      <p>{{beer.style}}</p>
-    </ion-item>
-  </div>
-  </ion-list>
-  <!-- <button ion-item *ngFor="let beer of beers" (click)="itemTapped($event, beer)">
-    <ion-icon name="beer" item-start></ion-icon>
-    {{beer.name}}
-    <div class="item-note" item-end>
-      {{beer.style}}
-    </div>
-  </button> -->
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title *ngIf="!selectedItem">Carta de Cervejas</ion-title>
+      <ion-title *ngIf="selectedItem">{{selectedItem.name}}</ion-title>
+    </ion-navbar>
+  </ion-header>
   
-  <div *ngIf="selectedItem" padding>
-    <h1>Informações</h1>
-    <p><b>IBU : </b>{{selectedItem.ibu}}</p>
-    <p><b>ABV : </b>{{selectedItem.abv}}</p>
-    <p><b>Estilo : </b>{{selectedItem.style}}</p>
-    <p><b>Preços : </b></p>
-    <p><b> - 1/2 Pint - </b>R${{selectedItem.price.half_pint}}</p>
-    <p><b> - Pint - </b>R${{selectedItem.price.pint}}</p>
-    <p><b> - Mass - </b>R${{selectedItem.price.mass}}</p>
-  </div>
-</ion-content>
+  <ion-content>
+    <ion-list *ngFor="let beer of beers">
+      <div *ngIf="beer != null" >
+        <ion-item (click)="itemTapped($event, beer)">
+          <ion-avatar item-start>
+            <img src="assets/icon/mapicons/beer.png">
+          </ion-avatar>
+          <h2>{{beer.name}}</h2>
+          <p>{{beer.style}}</p>
+        </ion-item>
+      </div>
+    </ion-list>
+    <!-- <button ion-item *ngFor="let beer of beers" (click)="itemTapped($event, beer)">
+      <ion-icon name="beer" item-start></ion-icon>
+      {{beer.name}}
+      <div class="item-note" item-end>
+        {{beer.style}}
+      </div>
+    </button> -->
+    
+    <div *ngIf="selectedItem" padding>
+      <ion-item>
+          <ion-avatar item-start>
+              <img src="assets/icon/mapicons/beer.png">
+            </ion-avatar>
+          <h1>Informações</h1>
+          <p><b>IBU : </b>{{selectedItem.ibu}}</p>
+          <p><b>ABV : </b>{{selectedItem.abv}}</p>
+          <p><b>Estilo : </b>{{selectedItem.style}}</p>
+          <p><b>Preços : </b></p>
+          <p><b> - 1/2 Pint - </b>R${{selectedItem.price.half_pint}}</p>
+          <p><b> - Pint - </b>R${{selectedItem.price.pint}}</p>
+          <p><b> - Mass - </b>R${{selectedItem.price.mass}}</p>
+          <p><b> - Obs - </b>R${{selectedItem.obs}}</p>
+      </ion-item>
+      <ion-item *ngIf="isLoggedIn" >
+          <ion-grid>
+              <ion-row>
+                  <ion-col>
+                      <div><button ion-button icon-left clear item-left *ngIf="!isFavorite" (click)="doFavorites('put')">
+                          <ion-icon name="add"></ion-icon>
+                          Favorito
+                      </button></div>
+                  </ion-col>
+                  <ion-col offset-4>
+                      <div><button ion-button icon-left clear item-left *ngIf="isFavorite" (click)="doFavorites('delete')">
+                          <ion-icon name="trash"></ion-icon>
+                          Favorito
+                      </button></div>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+      </ion-item>
+    </div>
+  </ion-content>
+  

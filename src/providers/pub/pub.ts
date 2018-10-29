@@ -31,6 +31,7 @@ export class PubProvider {
       .map(res => <any[]>res)
       .catch((erro:any)=>Observable.throw(erro));
   }
+  // 
   getPub(pub_id): Observable<any[]>{
     let options = {
       headers: new HttpHeaders({
@@ -49,6 +50,24 @@ export class PubProvider {
     .map(res => <any[]>res)
     .catch((erro:any)=>Observable.throw(erro));
   }
-
+  // 
+  async addComment(data){
+    let headers = new HttpHeaders();
+    headers.append("Content-type","application/json");
+    console.log("Adicionando favorito",data);
+    let userStorage = await this.getStorageData();
+    data.token = userStorage.token;
+    return new Promise((resolve, reject)=>{
+      this.http.put(`${this.urlAPI}/comments/${data.pub_id}`, data,{headers:headers})
+        .subscribe(result =>{
+          resolve(result);
+        },
+        error=>{
+          console.log("ERRO na requisiçao",error);
+          reject(error);
+        });
+        
+    });
+  }
 
 }

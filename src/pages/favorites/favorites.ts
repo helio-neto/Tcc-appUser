@@ -37,7 +37,6 @@ export class FavoritesPage {
   // 
   ionViewDidEnter(){
    this.initFav();
-   
   }
   // 
   beerTapped(event, beer) {

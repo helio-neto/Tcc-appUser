@@ -15,7 +15,7 @@ export class PubPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private userProv: UserProvider,
               public toastCtrl: ToastController, private storage: Storage) {
     this.pub = navParams.data.pub;
-    console.log("Pub ID",this.pub._id);
+    console.log("Pub ID",this.pub);
     this.checkUser();
   }
   // 
@@ -93,8 +93,6 @@ export class PubPage {
         }
       });
     }
-    
-    
   }
   // 
   presentToast(message,cssStyle) {
@@ -112,7 +110,7 @@ export class PubPage {
     toast.present();
   }
   // 
-  checkPubFav(){
-    
+  openComments(){
+    this.navCtrl.push("CommentsPage", {comments: this.pub.comments,pub_id:this.pub._id});
   }
 }

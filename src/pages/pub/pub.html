@@ -28,33 +28,42 @@
                 <h3>E-mail</h3>
                 <ion-note item-right iont-text color="dark">{{pub.email}}</ion-note>
             </ion-item>
-            <button ion-item>
+            <ion-item ion-item>
                 <ion-icon item-left name="call"></ion-icon>
                 <h3>Fone</h3>
                 <ion-note item-right iont-text color="dark">{{pub.phone}}</ion-note>
+            </ion-item>
+            <ion-item ion-item>
+                <ion-icon item-left name="phone-portrait"></ion-icon>
+                <h3>Celular</h3>
+                <ion-note item-right iont-text color="dark">{{pub.celphone}}</ion-note>
+            </ion-item>
+            <button ion-item (click)="openComments()">
+                <ion-icon item-left name="clipboard"></ion-icon>
+                <h3>Comentários</h3>
+                <ion-note item-right iont-text color="dark">
+                        <ion-icon name="arrow-forward"></ion-icon>
+                </ion-note>
             </button>
         </ion-list>
         
         <ion-item *ngIf="isLoggedIn" >
-                <ion-grid>
-                        <ion-row>
-                          <ion-col>
-                            <div><button ion-button icon-left clear item-left *ngIf="!isFavorite" (click)="doFavorites('put')">
-                                    <ion-icon name="add"></ion-icon>
-                                    Favorito
-                                </button></div>
-                          </ion-col>
-                          <ion-col offset-4>
-                            <div><button ion-button icon-left clear item-left *ngIf="isFavorite" (click)="doFavorites('delete')">
-                                    <ion-icon name="trash"></ion-icon>
-                                    Favorito
-                                </button></div>
-                          </ion-col>
-                        </ion-row>
-                    
-                      </ion-grid>
-            
-            
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <div><button ion-button icon-left clear item-left *ngIf="!isFavorite" (click)="doFavorites('put')">
+                            <ion-icon name="add"></ion-icon>
+                            Favorito
+                        </button></div>
+                    </ion-col>
+                    <ion-col offset-4>
+                        <div><button ion-button icon-left clear item-left *ngIf="isFavorite" (click)="doFavorites('delete')">
+                            <ion-icon name="trash"></ion-icon>
+                            Favorito
+                        </button></div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
         </ion-item>
         
     </ion-card>

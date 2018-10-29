@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Comentários</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <h1 text-center> Mural de Recados</h1>
+    <div class="comment-box" >
+      <ion-card *ngFor="let comment of comments">
+        <ion-card-content *ngIf="comment" >
+              <strong>{{comment.message}}</strong>
+              <p>
+               {{comment.created | date : 'H:mm a'}}
+              </p>
+              <p>
+                {{comment.user}}
+               </p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  <ion-footer padding>
+    <ion-textarea [(ngModel)]="message" type="text" placeholder="Deixar comentário.... "></ion-textarea>
+    <button ion-button small float-right round (click)="sendComment()">Enviar</button>
+  </ion-footer>
+</ion-content>

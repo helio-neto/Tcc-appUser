@@ -77,6 +77,7 @@ export class UserProvider {
         
     });
   }
+  // 
   async removeFavorite(data){
     let headers = new HttpHeaders();
     headers.append("Content-type","application/json");
@@ -102,4 +103,6 @@ export class UserProvider {
     });
     
   }
+  // 
+  
 }
