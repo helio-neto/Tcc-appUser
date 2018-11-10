@@ -13,7 +13,7 @@
       <div *ngIf="beer != null" >
         <ion-item (click)="itemTapped($event, beer)">
           <ion-avatar item-start>
-            <img src="assets/icon/mapicons/beer.png">
+            <img [src]="beer.icon">
           </ion-avatar>
           <h2>{{beer.name}}</h2>
           <p>{{beer.style}}</p>
@@ -31,7 +31,7 @@
     <div *ngIf="selectedItem" padding>
       <ion-item>
           <ion-avatar item-start>
-              <img src="assets/icon/mapicons/beer.png">
+              <img [src]="selectedItem.icon">
             </ion-avatar>
           <h1>Informações</h1>
           <p><b>IBU : </b>{{selectedItem.ibu}}</p>
@@ -48,13 +48,13 @@
               <ion-row>
                   <ion-col>
                       <div><button ion-button icon-left clear item-left *ngIf="!isFavorite" (click)="doFavorites('put')">
-                          <ion-icon name="add"></ion-icon>
+                          <ion-icon name="star"></ion-icon>
                           Favorito
                       </button></div>
                   </ion-col>
                   <ion-col offset-4>
-                      <div><button ion-button icon-left clear item-left *ngIf="isFavorite" (click)="doFavorites('delete')">
-                          <ion-icon name="trash"></ion-icon>
+                      <div><button ion-button icon-left clear item-left color="danger" *ngIf="isFavorite" (click)="doFavorites('delete')">
+                          <ion-icon name="trash" color="danger"></ion-icon>
                           Favorito
                       </button></div>
                   </ion-col>

@@ -10,31 +10,31 @@
 
 <ion-content class="background_menu" *ngIf="userReady" >
     <ion-card *ngIf="userdata.user.consumername">
-        <img class="userimage" [src]="userdata.user.photo" />
+        <img class="userimage" [src]="userdata.user.photo" height='200'/>
         <ion-card-content>
             <h2 class="card-title">{{userdata.user.consumername}}</h2>
             <p>{{userdata.user.location.street}}, {{userdata.user.location.city}} {{userdata.user.location.uf}}</p>
         </ion-card-content>
         <ion-list>
             <ion-item>
-                <ion-icon item-left name="mail"></ion-icon>
+                <ion-icon item-left name="mail" color="secondary"></ion-icon>
                 <h3>E-mail</h3>
-                <ion-note item-right iont-text color="dark">{{userdata.user.email}}</ion-note>
+                <ion-note item-right iont-text color="secondary">{{userdata.user.email}}</ion-note>
             </ion-item>
             <ion-item>
-                <ion-icon item-left name="call"></ion-icon>
+                <ion-icon item-left name="call" color="secondary"></ion-icon>
                 <h3>Fone</h3>
-                <ion-note item-right iont-text color="dark">{{userdata.user.phone}}</ion-note>
+                <ion-note item-right iont-text color="secondary">{{userdata.user.phone}}</ion-note>
             </ion-item>
             <ion-item>
-                <ion-icon item-left name="phone-portrait"></ion-icon>
+                <ion-icon item-left name="phone-portrait" color="secondary"></ion-icon>
                 <h3>Celular</h3>
-                <ion-note item-right iont-text color="dark">{{userdata.user.celphone}}</ion-note>
+                <ion-note item-right iont-text color="secondary">{{userdata.user.celphone}}</ion-note>
             </ion-item>
             <button ion-item (click)="openFav()">
-                <ion-icon item-left name="star"></ion-icon>
+                <ion-icon item-left name="star" color="secondary"></ion-icon>
                 <h3>Favoritos</h3>
-                <ion-note item-right iont-text color="dark">
+                <ion-note item-right iont-text color="secondary">
                         <ion-icon name="arrow-forward"></ion-icon>
                 </ion-note>
             </button>

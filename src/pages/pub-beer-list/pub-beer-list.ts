@@ -14,9 +14,21 @@ export class PubBeerListPage {
   selectedItem: any;
   isLoggedIn: boolean;
   isFavorite: boolean;
-  icons: string[];
   items: Array<{title: string, note: string, icon: string}>;
-
+  icons = {
+    "Pilsen": "assets/icon/mapicons/beer-icon1-1.png",
+    "Lager": "assets/icon/mapicons/beer-cup-1-2.png",
+    "Ipa": "assets/icon/mapicons/beer-icon1-2.png",
+    "Apa": "assets/icon/mapicons/beer-icon1-2.png",
+    "Saison": "assets/icon/mapicons/beer-icon1-1.png",
+    "Stout": "assets/icon/mapicons/icons8-guinness-beer-48.png",
+    "Bock": "assets/icon/mapicons/icons8-guinness-beer-48.png",
+    "Doppelbock": "assets/icon/mapicons/icons8-guinness-beer-48.png",
+    "ibu": "assets/icon/mapicons/icons8-hops-40.png",
+    "abv": "assets/icon/mapicons/percent.png",
+    "styles": "assets/icon/mapicons/styles.png",
+    "Default": "assets/icon/mapicons/beer.png"
+  };
   constructor(public navCtrl: NavController, public navParams: NavParams,public splashScreen: SplashScreen,
     public toastCtrl: ToastController, private storage: Storage, private userProv: UserProvider) {
     // If we navigated to this page, we will have an item available as a nav param
@@ -24,10 +36,26 @@ export class PubBeerListPage {
     this.beers = navParams.get('beers');
     console.log("Beers .:.",this.beers);
     this.checkUser();
+    if(this.beers){
+      this.setIcons();
+    }
+    
   }
   // 
   ionViewDidEnter() {
     this.splashScreen.hide()
+  }
+  // 
+  setIcons(){
+    console.log("SET ICONS",this.beers);
+    
+    this.beers.forEach(beer => {
+      if(beer){
+        let funIcon = (this.icons[beer.style]) ? this.icons[beer.style] : this.icons.Default;
+        beer.icon = funIcon;
+      }
+      
+    });
   }
   // 
   itemTapped(event, item) {
@@ -121,7 +149,6 @@ export class PubBeerListPage {
       });
     }
   }
-  // 
   // 
   presentToast(message,cssStyle) {
     let toast = this.toastCtrl.create({
