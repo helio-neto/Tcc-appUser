@@ -8,27 +8,28 @@
     </ion-navbar>
   </ion-header>
   
-  <ion-content>
-    <ion-list *ngFor="let beer of beers">
-      <div *ngIf="beer != null" >
-        <ion-item (click)="itemTapped($event, beer)">
-          <ion-avatar item-start>
-            <img [src]="beer.icon">
-          </ion-avatar>
-          <h2>{{beer.name}}</h2>
-          <p>{{beer.style}}</p>
-        </ion-item>
-      </div>
-    </ion-list>
-    <!-- <button ion-item *ngFor="let beer of beers" (click)="itemTapped($event, beer)">
-      <ion-icon name="beer" item-start></ion-icon>
-      {{beer.name}}
-      <div class="item-note" item-end>
-        {{beer.style}}
-      </div>
-    </button> -->
+  <ion-content padding>
+      <div *ngIf="!selectedItem" >
+          <ion-list *ngFor="let beer of beers" >
+            <div *ngIf="beer != null">
+              <ion-item (click)="itemTapped($event, beer)">
+                <ion-avatar item-start>
+                  <img [src]="beer.icon">
+                </ion-avatar>
+                <h2><b>{{beer.name}}</b></h2>
+                <p style="font-size: 1.3rem">
+                  {{beer.style}}<span ion-text style="font-size: 30px">.</span>{{beer.ibu}} IBU<span ion-text style="font-size: 30px">.</span>{{beer.abv}}% ABV
+                </p>
+                <ion-note item-right iont-text color="primary">
+                  <ion-icon name="arrow-forward"></ion-icon>
+                </ion-note>
+              </ion-item>
+            </div>
+          </ion-list>
+        </div>
     
-    <div *ngIf="selectedItem" padding>
+    
+    <!-- <div *ngIf="selectedItem" padding>
       <ion-item>
           <ion-avatar item-start>
               <img [src]="selectedItem.icon">
@@ -61,6 +62,104 @@
               </ion-row>
           </ion-grid>
       </ion-item>
-    </div>
+    </div> -->
+    <div *ngIf="selectedItem">
+        <ion-row class="header">
+          <ion-col col-6>
+            <img [src]="selectedItem.icon">
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12>
+            <h4 class="name">{{selectedItem.name}}</h4>
+            <p>
+              <b>Estilo: </b><span class="beer-style"> {{selectedItem.style}}</span>
+            </p>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row>
+          <ion-col col-4 align-self-start>
+            <img src="{{icons.ibu}}" width="15" height="15"/> {{selectedItem.ibu}} IBU 
+          </ion-col>
+          <ion-col col-8>
+            <img src="{{icons.abv}}" width="15" height="15"/> {{selectedItem.abv}}% ABV
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-4 align-self-start>
+            <h5>Preços</h5>
+          </ion-col>
+        </ion-row>
+        <ion-grid text-center>
+            <ion-row>
+                <ion-col width-20>
+                  <b>Half-Pint</b>
+                </ion-col>
+                <ion-col width-20>
+                  <b>Pint</b>
+                </ion-col>
+                <ion-col width-20>
+                  <b>Mass</b>
+                </ion-col>
+              </ion-row>
+          <ion-row>
+            <ion-col width-20>
+              <img [src]="selectedItem.icon" width="30" height="30">
+            </ion-col>
+            <ion-col width-20>
+              <img [src]="selectedItem.icon" width="35" height="35">
+            </ion-col>
+            <ion-col width-20>
+              <img [src]="selectedItem.icon" width="55" height="55">
+            </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col width-20>
+                  R$ {{selectedItem.price.half_pint}}
+              </ion-col>
+              <ion-col width-20>
+                  R$ {{selectedItem.price.pint}}
+              </ion-col>
+              <ion-col width-20>
+                  R$ {{selectedItem.price.mass}}
+              </ion-col>
+            </ion-row>
+        </ion-grid>
+        <ion-row>
+          <ion-col>
+            <h5>Informações</h5>
+            <p>
+              {{selectedItem.obs}}
+            </p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-item *ngIf="isLoggedIn" >
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div><button ion-button icon-left clear item-left *ngIf="!isFavorite" (click)="doFavorites('put')">
+                                <ion-icon name="star"></ion-icon>
+                                Favorito
+                            </button></div>
+                        </ion-col>
+                        <ion-col offset-4>
+                            <div><button ion-button icon-left clear item-left color="danger" *ngIf="isFavorite" (click)="doFavorites('delete')">
+                                <ion-icon name="trash" color="danger"></ion-icon>
+                                Favorito
+                            </button></div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+        </ion-row>
+      </div>
   </ion-content>
-  
+  <!-- <button ion-item *ngFor="let beer of beers" (click)="itemTapped($event, beer)">
+      <ion-icon name="beer" item-start></ion-icon>
+      {{beer.name}}
+      <div class="item-note" item-end>
+        {{beer.style}}
+      </div>
+    </button> -->
