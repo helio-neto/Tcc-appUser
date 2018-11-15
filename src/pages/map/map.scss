@@ -20,6 +20,22 @@ page-map {
           font-size: 1.6em;
           top: 30%;
     }
+    #no-results {
+      position: absolute;
+      background-color: map-get($colors, dark);;
+      opacity: 0.5;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+  }
+  #no-results p {
+        color: map-get($colors, light);
+        font-weight: bold;
+        text-align: center;
+        position: relative;
+        font-size: 1.6em;
+        top: 30%;
+  }
     .scroll {
         height: 100%;
     }

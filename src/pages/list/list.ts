@@ -18,7 +18,7 @@ export class ListPage {
   searchON: boolean = false;
   cancelText: string = "Cancelar";
   searching: any = false;
-
+  isEmpty: boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams,public events: Events,
               public pubProvider: PubProvider, public locationProv: LocationProvider) {
     
@@ -32,7 +32,7 @@ export class ListPage {
     });
     this.pubs = this.locationProv.pubsAfter;
     this.originData = this.pubs;
-    console.log(this.pubs);
+    console.log("PUUUUUUBS LIST",this.pubs);
   }
   //
   openPubDetails(pub) {
@@ -45,6 +45,7 @@ export class ListPage {
     //console.log("Query",this.query);
     if(this.query == ''){
       this.pubs = this.originData;
+      this.isEmpty = false;
     }else{
       this.pubProvider.searchByBeer(this.query).subscribe(
         (data) => {
@@ -57,10 +58,18 @@ export class ListPage {
             }
           }));
           this.pubs = this.afterSearch;
-          //console.log("SEARCH RESULT ->",this.afterSearch);
+          console.log("SEARCH RESULT ->",this.pubs);
+          if(this.pubs.length == 0){
+            console.log("EMPTY");
+            this.isEmpty = true;
+          }else{
+            this.isEmpty = false;
+          }
           
         },
-        (erro) => this.erro = erro
+        (erro) => {
+          this.erro = erro
+        }
       );
     }
     
@@ -68,6 +77,7 @@ export class ListPage {
   onCancel(event){
     this.pubs = this.originData;
     console.log("Cancel Event",event);
+    this.isEmpty = false;
   }
   searchBarList(){
     if(this.searchON){

@@ -1,12 +1,11 @@
 import { Component, ViewChild, ElementRef} from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, Events } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
 import { PubProvider } from '../../providers/pub/pub';
 import { LocationProvider } from '../../providers/location/location';
 import { GoogleMapsProvider } from './../../providers/google-maps/google-maps';
 import { Diagnostic } from '@ionic-native/diagnostic';
-
+import { LoadingProvider } from './../../providers/loading/loading';
 @IonicPage()
 @Component({
   selector: 'page-map',
@@ -16,6 +15,7 @@ export class MapPage {
   
   @ViewChild('map') mapElement: ElementRef;
   @ViewChild('pleaseConnect') pleaseConnect: ElementRef;
+  @ViewChild('noResults') noResults: ElementRef;
   
   latitude: number;
   longitude: number;
@@ -30,7 +30,8 @@ export class MapPage {
   gpsType: any;
   constructor(public platform: Platform, public navCtrl: NavController, public splashScreen: SplashScreen, 
     public pubProvider: PubProvider, public googleMaps: GoogleMapsProvider, public events: Events, 
-    public navParams: NavParams, public locationProv: LocationProvider,private diagnostic: Diagnostic) {
+    public navParams: NavParams, public locationProv: LocationProvider,private diagnostic: Diagnostic,
+    public loadProvider: LoadingProvider) {
       this.events.subscribe("search",(search)=>{
         this.searchON = search;
       });
@@ -44,14 +45,16 @@ export class MapPage {
     ionViewDidLoad() {
       console.log('ionViewDidLoad MapPage');
       this.platform.ready().then(() => { 
-        
         let mapLoaded = this.googleMaps.init(this.mapElement, this.pleaseConnect, this.gpsType).then((data) => {
           console.log("MapLoaded Return",data);
           this.splashScreen.hide();
+          this.loadProvider.presentWithMessage("Cevando pubs no mapa...");
           let locationsLoaded = this.locationProv.loadPubs().then((data)=>{
-            console.log("Locations ->",data);
-            this.googleMaps.pinPubs(data);
-            //this.googleMaps.loadPlaces();
+            this.loadProvider.dismiss().then(()=>{
+              console.log("Locations ->",data);
+              this.googleMaps.pinPubs(data);
+              //this.googleMaps.loadPlaces();
+            })
           }).catch((error)=>{
             console.log(error)
           });
@@ -67,13 +70,19 @@ export class MapPage {
     // }
     // SearchBar Input Event     
     onInput(event){
-      this.googleMaps.removeMarker();
-      setTimeout(() => {
+      this.noResults.nativeElement.style.display = "none";
+      this.loadProvider.presentWithMessage("Cevando resultados...");
         this.locationProv.searchMap(this.query).then((data)=>{
-          console.log("DATA SEARCH MAP -> ",data);
-          this.googleMaps.pinPubs(data);
-        });
-      }, 1000);    
+          this.loadProvider.dismiss().then(()=>{
+            if(data['length']){
+              this.googleMaps.removeMarker();
+              console.log("DATA SEARCH MAP -> ",data);
+              this.googleMaps.pinPubs(data);
+            }else{
+              this.noResults.nativeElement.style.display = "block";
+            }
+          });
+        }); 
       //console.log(event);
     }
     // SearchBar Cancel Event

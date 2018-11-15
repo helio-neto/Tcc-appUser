@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ModalController, Navbar  } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { PubProvider } from './../../providers/pub/pub';
-
+import { LoadingProvider } from './../../providers/loading/loading';
 @IonicPage()
 @Component({
   selector: 'page-favorites',
@@ -15,8 +15,10 @@ export class FavoritesPage {
   beers: any;
   selectedBeer: any;
   pub: any;
+  token: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, 
-              public modalCtrl: ModalController, private storage: Storage, private pubProv: PubProvider) {
+              public modalCtrl: ModalController, private storage: Storage, private pubProv: PubProvider,
+              public loadProvider: LoadingProvider) {
 
       this.initFav();
   }
@@ -25,6 +27,7 @@ export class FavoritesPage {
     this.platform.ready().then(()=>{
       this.storage.get("userdata").then((val)=>{
         console.log("Favorites Val",val.user.favorites);
+        this.token = val.token;
         this.pubs = val.user.favorites.pubs;
         this.beers = val.user.favorites.beers;
       });
@@ -52,10 +55,25 @@ export class FavoritesPage {
   }
   // 
   goToPub(pub_id){
-    this.pubProv.getPub(pub_id).subscribe((resp)=>{
-      this.pub = resp['pub'];
-      this.navCtrl.push("PubPage", {pub : this.pub});
-    })
+    this.loadProvider.presentWithMessage("Cevando informações...");
+    let payload = {
+      pub_id : pub_id,
+      token: this.token
+    }
+    this.pubProv.getPub(payload).subscribe((resp)=>{
+      console.log("RESP",resp);
+      
+      this.loadProvider.dismiss().then(()=>{
+        this.pub = resp['pub'];
+        this.navCtrl.push("PubPage", {pub : this.pub});
+      });
+    },
+    (error)=>{
+      this.loadProvider.dismiss().then(()=>{
+        console.log("Error loading",error);
+        
+      });
+    });
   }
   
   

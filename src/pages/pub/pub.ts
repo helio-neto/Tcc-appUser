@@ -21,7 +21,7 @@ export class PubPage {
   // 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PubPage');
-    this.navCtrl.getAllChildNavs();
+    
   }
   // 
   openMenu(){
@@ -33,21 +33,27 @@ export class PubPage {
       console.log("STORAGE", val);
       if(val.isLoggedIn){
           this.isLoggedIn = true;
-          let pubsFav = val.user.favorites.pubs;
-          console.log("Check User",pubsFav);
-          let isFav = pubsFav.filter(
-            (pub) => {
-              return pub._id === this.pub._id;
+          let pubsFav = (val.user.favorites) ? val.user.favorites.pubs : null;
+          console.log("Check User for favorites",pubsFav);
+          if(pubsFav !== null){
+            let isFav = pubsFav.filter(
+              (pub) => {
+                return pub._id === this.pub._id;
+              }
+            );
+            console.log("ISFAV",isFav);
+            if(isFav.length>0){
+              this.isFavorite = true;
+              console.log("Is Favorite",isFav);
+            }else{
+              this.isFavorite = false;
+              console.log("Not Favorite",isFav);
             }
-          );
-          console.log("ISFAV",isFav);
-          if(isFav.length>0){
-            this.isFavorite = true;
-            console.log("Is Favorite",isFav);
           }else{
             this.isFavorite = false;
-            console.log("Not Favorite",isFav);
+              console.log("Favorites is empty");
           }
+          
       }else{
         this.isLoggedIn = false;
       }

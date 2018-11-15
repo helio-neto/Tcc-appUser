@@ -3,6 +3,8 @@ import { NavController, NavParams, IonicPage, ToastController } from 'ionic-angu
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import { UserProvider } from './../../providers/user/user';
+import { LoadingProvider } from './../../providers/loading/loading';
+
 @IonicPage()
 @Component({
   selector: 'page-pub-beer-list',
@@ -30,7 +32,8 @@ export class PubBeerListPage {
     "Default": "assets/icon/mapicons/beer.png"
   };
   constructor(public navCtrl: NavController, public navParams: NavParams,public splashScreen: SplashScreen,
-    public toastCtrl: ToastController, private storage: Storage, private userProv: UserProvider) {
+    public toastCtrl: ToastController, private storage: Storage, private userProv: UserProvider,
+    public loadProvider: LoadingProvider) {
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('item');
     this.beers = navParams.get('beers');
@@ -72,23 +75,28 @@ export class PubBeerListPage {
       console.log("Beer .:.",this.selectedItem);
       if(val.isLoggedIn){
           this.isLoggedIn = true;
-          this.beersFav = val.user.favorites.beers;
+          this.beersFav = (val.user.favorites) ? val.user.favorites.beers : null;
           console.log("Check beersfav",this.beersFav);
-          if(this.selectedItem){
-            let isFav = this.beersFav.filter(
-              (beer) => {
-                return beer.name === this.selectedItem.name;
+          if(this.beersFav !== null){
+            if(this.selectedItem){
+              let isFav = this.beersFav.filter(
+                (beer) => {
+                  return beer.name === this.selectedItem.name;
+                }
+              );
+              console.log("ISFAV",isFav);
+              if(isFav.length>0){
+                this.isFavorite = true;
+                console.log("Is Favorite",isFav);
+              }else{
+                this.isFavorite = false;
+                console.log("Not Favorite",isFav);
               }
-            );
-            console.log("ISFAV",isFav);
-            if(isFav.length>0){
-              this.isFavorite = true;
-              console.log("Is Favorite",isFav);
-            }else{
-              this.isFavorite = false;
-              console.log("Not Favorite",isFav);
             }
+          }else{
+            this.isFavorite = false;
           }
+          
           
       }else{
         this.isLoggedIn = false;
@@ -97,6 +105,7 @@ export class PubBeerListPage {
   }
   // 
   doFavorites(action){
+    this.loadProvider.presentWithMessage("Cevando favoritos...")
     if(action == "delete"){
       let beer = this.beersFav.filter(
         (beer) => {
@@ -110,7 +119,8 @@ export class PubBeerListPage {
       }
       console.log("FAVORITES DELETE",data);
       this.userProv.removeFavorite(data).then((resp)=>{
-        console.log("DELETE FAV Return",resp);
+        this.loadProvider.dismiss().then(()=>{
+          console.log("DELETE FAV Return",resp);
         if(resp['status'] == "success"){
             this.storage.get("userdata").then((val)=>{
               val.user.favorites = resp["favorites"];
@@ -121,6 +131,7 @@ export class PubBeerListPage {
         }else{
           this.presentToast(resp['message'],"error");
         }
+        })
       });
     }else if (action == "put"){
       let data = {
@@ -133,9 +144,10 @@ export class PubBeerListPage {
             abv: this.selectedItem.abv
         }]
       }
-      console.log("FAVORITES ADD",data)
+      console.log("FAVORITES ADD",data);
       this.userProv.addFavorite(data).then((resp)=>{
-        console.log("ADD FAV Return",resp);
+        this.loadProvider.dismiss().then(()=>{
+          console.log("ADD FAV Return",resp);
         if(resp['status'] == "success"){
             this.storage.get("userdata").then((val)=>{
               val.user.favorites = resp["favorites"];
@@ -146,6 +158,7 @@ export class PubBeerListPage {
         }else{
           this.presentToast(resp['message'],"error");
         }
+        })
       });
     }
   }

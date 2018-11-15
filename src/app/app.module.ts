@@ -19,6 +19,7 @@ import { UserProvider } from '../providers/user/user';
 import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
 import { ConnectivityProvider } from '../providers/connectivity/connectivity';
 import { LocationProvider } from '../providers/location/location';
+import { LoadingProvider } from '../providers/loading/loading';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { LocationProvider } from '../providers/location/location';
     UserProvider,
     GoogleMapsProvider,
     ConnectivityProvider,
-    LocationProvider
+    LocationProvider,
+    LoadingProvider
   ]
 })
 export class AppModule {}

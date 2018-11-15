@@ -32,15 +32,15 @@ export class PubProvider {
       .catch((erro:any)=>Observable.throw(erro));
   }
   // 
-  getPub(pub_id): Observable<any[]>{
+  getPub(data): Observable<any[]>{
     let options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `Token ${this.data.token}`
+        'Authorization': `Token ${data.token}`
       }),
-      body: pub_id
+      body: data.pub_id
     };
-    return this.http.get(`${this.urlAPI}/${pub_id}`,options)
+    return this.http.get(`${this.urlAPI}/${data.pub_id}`,options)
       .map(res => <any[]>res)
       .catch((erro:any)=>Observable.throw(erro));
   }

@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, ToastController, 
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { GoogleMapsProvider } from './../../providers/google-maps/google-maps';
 import { UserProvider } from './../../providers/user/user';
-
+import { LoadingProvider } from './../../providers/loading/loading';
 import { Storage } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -20,10 +20,11 @@ export class EditPage {
   formReady: boolean = false;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, 
-    public toastCtrl: ToastController, public navParams: NavParams, 
-    private formBuilder: FormBuilder,public googleMapsProvider: GoogleMapsProvider, 
-    public userProvider:UserProvider, private storage: Storage, 
-    public splashScreen: SplashScreen, public events: Events, public platform: Platform ) {
+              public toastCtrl: ToastController, public navParams: NavParams, 
+              private formBuilder: FormBuilder,public googleMapsProvider: GoogleMapsProvider, 
+              public userProvider:UserProvider, private storage: Storage, 
+              public splashScreen: SplashScreen, public events: Events, public platform: Platform,
+              public loadProvider: LoadingProvider ) {
       this.platform.ready().then(()=>{
         this.storage.get("userdata").then((val)=>{
           this.user = val.user;
@@ -154,30 +155,35 @@ edit(){
       this.submitAttempt = true; 
   }
   else {
+    this.loadProvider.presentWithMessage("Cevando as informações....")
     this.submitAttempt = false;
     console.log("success!")
     console.log("Form ->",this.userForm.value);
     this.userProvider.edit(this.userForm.value).then((resp)=>{
-      console.log("Response Edit ->",resp);
-      if(resp['status']=="success"){
-        delete resp["consumer"]['hash'];
-        delete resp["consumer"]['salt'];
-        this.presentToast(resp["message"], "success");
-        setTimeout(() => {
-          this.storage.get("userdata").then((val)=>{
-            val.user = resp["consumer"];
-            this.storage.set("userdata",val);
-            this.navCtrl.setRoot("ProfilePage"); 
-          })
-        }, 3000);
-        
-      }else{
-        this.presentToast(resp["message"], "error");
-      }
+        this.loadProvider.dismiss().then(()=>{
+          console.log("Response Edit ->",resp);
+        if(resp['status']=="success"){
+          delete resp["consumer"]['hash'];
+          delete resp["consumer"]['salt'];
+          this.presentToast(resp["message"], "success");
+          setTimeout(() => {
+            this.storage.get("userdata").then((val)=>{
+              val.user = resp["consumer"];
+              this.storage.set("userdata",val);
+              this.navCtrl.setRoot("ProfilePage"); 
+            })
+          }, 3000);
+          
+        }else{
+          this.presentToast(resp["message"], "error");
+        }
+      });
     }).catch((error)=>{
-      this.presentToast(error.statusText, "error");
-      console.log("ERROR ERROR",error)
-    })
+      this.loadProvider.dismiss().then(()=>{
+        this.presentToast(error.statusText, "error");
+        console.log("ERROR ERROR",error);
+      });
+    });
   }
 }
 

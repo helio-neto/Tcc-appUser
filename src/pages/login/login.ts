@@ -4,6 +4,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import { UserProvider } from './../../providers/user/user';
+import { LoadingProvider } from './../../providers/loading/loading';
 
 @IonicPage()
 @Component({
@@ -15,7 +16,7 @@ export class LoginPage {
   submitAttempt: boolean = false;
   constructor(public navCtrl: NavController, public splashScreen: SplashScreen, public navParams: NavParams, private formBuilder: FormBuilder,
               public userProvider:UserProvider, private storage: Storage, public toastCtrl: ToastController,
-              public events: Events) {
+              public events: Events, public loadProvider: LoadingProvider) {
 
               this.loginForm = this.formBuilder.group({
                   email: ['',Validators.compose([Validators.required, Validators.email]) ],
@@ -49,28 +50,33 @@ export class LoginPage {
       this.submitAttempt = true; 
     }
     else {
+      this.loadProvider.presentWithMessage("Cevando informações ....");
       this.submitAttempt = false;
       console.log("success!")
       console.log("Form ->",this.loginForm.value);
       this.userProvider.login(this.loginForm.value).subscribe((res)=>{
-        if(res.status == "error"){
-          this.presentToast(res.message,"error");
-        }else{
-          this.presentToast(res.message,"success");
-          this.storage.set('userdata',{
-              user: res.user,
-              isLoggedIn: true,
-              token: res.token
-          });
-          setTimeout(() => {
-            this.events.publish("login");
-            this.navCtrl.setRoot("ProfilePage");
-          }, 4000);
-        }
+        this.loadProvider.dismiss().then(()=>{
+          if(res.status == "error"){
+            this.presentToast(res.message,"error");
+          }else{
+            this.presentToast(res.message,"success");
+            this.storage.set('userdata',{
+                user: res.user,
+                isLoggedIn: true,
+                token: res.token
+            });
+            setTimeout(() => {
+              this.events.publish("login");
+              this.navCtrl.setRoot("ProfilePage");
+            }, 4000);
+          }
+        });
         console.log("Login response ->",res);
       },
       (error)=>{
-        this.presentToast(JSON.stringify(error),"error");
+        this.loadProvider.dismiss().then(()=>{
+          this.presentToast(JSON.stringify(error),"error");
+        });
       });
     }
   }
