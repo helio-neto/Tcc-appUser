@@ -15,7 +15,7 @@ export class CommentsPage {
   message: string;
   userdata: any;
   userReady: boolean = false;
-
+  isLoggedIn: boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage,
               public toastCtrl: ToastController, public platform: Platform, private pubProv: PubProvider,
               public loadProvider: LoadingProvider) {
@@ -38,6 +38,7 @@ export class CommentsPage {
   loadProfile(){
     this.storage.get("userdata").then((val)=>{
       this.userdata = val;
+      this.isLoggedIn = val.isLoggedIn;
       this.userReady = true;
       console.log("Profile User Data ->",this.userdata);
     });

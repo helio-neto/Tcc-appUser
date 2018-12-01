@@ -10,7 +10,7 @@
 
 <ion-content class="background_menu" *ngIf="userReady" padding-top>
     <ion-card *ngIf="userdata.user.consumername">
-        <img class="userimage" [src]="userdata.user.photo" height='250'/>
+        <img class="userimage" [src]="userdata.user.photo" onError="this.src='assets/imgs/beer_logo.jpg';" height='250'/>
         <ion-card-content>
             <h2 class="card-title">{{userdata.user.consumername}}</h2>
             <p>{{userdata.user.location.street}}, {{userdata.user.location.city}} {{userdata.user.location.uf}}</p>

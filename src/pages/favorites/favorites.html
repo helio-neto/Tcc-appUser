@@ -24,7 +24,7 @@
         <div *ngFor="let pub of pubs" >
         <ion-item (click)="goToPub(pub._id)">
           <ion-thumbnail item-start>
-            <img [src]="pub.photo">
+            <img [src]="pub.photo" onError="this.src='assets/imgs/beerslide3.jpg';">
           </ion-thumbnail>
           <h2>{{ pub.name }}</h2>
         </ion-item>

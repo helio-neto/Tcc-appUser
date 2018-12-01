@@ -79,6 +79,7 @@ export class MapPage {
               console.log("DATA SEARCH MAP -> ",data);
               this.googleMaps.pinPubs(data);
             }else{
+              this.googleMaps.removeMarker();
               this.noResults.nativeElement.style.display = "block";
             }
           });

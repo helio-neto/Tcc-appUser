@@ -20,7 +20,7 @@
         </ion-card-content>
       </ion-card>
     </div>
-  <ion-footer padding>
+  <ion-footer *ngIf="isLoggedIn"  padding>
     <ion-textarea [(ngModel)]="message" type="text" placeholder="Deixar comentário.... "></ion-textarea>
     <button ion-button small float-right round (click)="sendComment()">Enviar</button>
   </ion-footer>
